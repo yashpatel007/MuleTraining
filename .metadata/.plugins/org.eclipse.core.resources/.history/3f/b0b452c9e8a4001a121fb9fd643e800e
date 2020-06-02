@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="42390d37-1246-4cb3-989e-13f65ee86011" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5bd28a1c-7962-448c-87d1-14a8037862e9" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="helloFlow" doc:id="66d3de00-9c27-45ff-9222-6fcb7f47ae58" >
+		<http:listener doc:name="GET/hello" doc:id="9c774012-7d18-42d4-81b5-e0795ad02a08" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET">
+			<http:response reasonPhrase="Success" >
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"name" : "Yash"
+}]]]></http:headers>
+			</http:response>
+		</http:listener>
+		<set-payload value="Hello" doc:name="Hello" doc:id="9d6828ee-6428-4e75-9c71-623560709409" />
+		<logger level="INFO" doc:name="Logger" doc:id="061ea3aa-b904-4cb0-8a97-7c728173fbfd" />
+	</flow>
+	<flow name="goodbyeFlow" doc:id="cbccf2b6-4251-4274-8a14-3d297c2c3886" >
+		<http:listener doc:name="GET/goodbye" doc:id="953bf8f7-76bf-4d75-b37b-49b682ca3466" config-ref="HTTP_Listener_config" path="/goodbye" allowedMethods="GET">
+			<ee:repeatable-file-store-stream bufferUnit="MB" />
+		</http:listener>
+		<set-payload value="Goodbye" doc:name="Goodbye" doc:id="c6ff6fd5-ecd1-43c9-bac9-34fa39b90bb2" />
+		<http:request method="GET" doc:name="GET/goodbye" doc:id="769305b9-45f3-441a-ad4b-5a537cfd87c7" path="/goodbye" config-ref="HTTP_Request_configuration" responseTimeout="300000">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"fullname" : "Yash Patel"
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="2988e243-0e73-496d-b0dc-dfe6900d432a" />
+	</flow>
+	<flow name="apdev-examplesFlow" doc:id="8c983923-b75a-4e64-999d-df8663cf9fd3" >
+		<http:listener doc:name="Listener" doc:id="ac95bec1-4061-4801-95f9-f48baf10b2fb" config-ref="HTTP_Listener_config" path="/git"/>
+		<http:request method="POST" doc:name="CONSUME/git" doc:id="b066115d-98af-4f0b-84e6-10cbe2e728f3" config-ref="HTTP_Request_configuration" url="https://api.github.com"/>
+		<logger level="INFO" doc:name="Logger" doc:id="ad736c20-a72a-467d-acae-65eb44c0a5fc" message="#[payload]"/>
+	</flow>
+</mule>

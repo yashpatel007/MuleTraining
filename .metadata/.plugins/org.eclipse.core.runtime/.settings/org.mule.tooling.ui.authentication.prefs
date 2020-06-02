@@ -1,0 +1,7 @@
+authenticated.users=[{"id"\:"97da220b-9d52-447c-a048-90cffc5b70ee","token"\:"29be8bad-86e5-44c2-acd2-b5e9489badcd","userId"\:"Yash007","email"\:"patelyash1311@gmail.com","refreshToken"\:"","baseUrl"\:"https\://anypoint.mulesoft.com/","org"\:{"name"\:"NJC labs","id"\:"ccb11dbc-ad42-4405-b28e-d5a98fbfc14e","isMaster"\:true}}]
+current.token=29be8bad-86e5-44c2-acd2-b5e9489badcd
+current.user=Yash007
+eclipse.preferences.version=1
+expiration.time=30
+org.mule.tooling.amc.apps={"userProjectMap"\:{"Yash007"\:{"hello-test-api"\:"{\\"applicationName\\"\:\\"hello-test-apiyp\\",\\"muleRuntime\\"\:\\"4.3.0\\",\\"properties\\"\:{}}"}}}
+org.mule.tooling.ui.properties.enable.api.dependencies=true
